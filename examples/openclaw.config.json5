@@ -1,0 +1,63 @@
+// Example OpenClaw provider block for Berget AI, routed through berget-adapter.
+//
+// Merge the `models` and `agents` sections into your own openclaw.json / config.
+// Export your Berget key first:   export BERGET_AI_API="sk-..."
+{
+  models: {
+    mode: "merge",
+    providers: {
+      berget: {
+        // Point at the local proxy, NOT https://api.berget.ai/v1
+        baseUrl: "http://127.0.0.1:8899/v1",
+        apiKey: "${BERGET_AI_API}",
+        api: "openai-completions",
+        // Required because baseUrl is a loopback address (OpenClaw blocks
+        // private-network requests by default).
+        request: { allowPrivateNetwork: true },
+        models: [
+          {
+            id: "google/gemma-4-31B-it",
+            name: "Gemma 4 31B (Berget / EU)",
+            reasoning: false,            // Gemma is a non-thinking model
+            input: ["text", "image"],    // vision-capable
+            contextWindow: 262144,
+            maxTokens: 8192,
+          },
+          {
+            id: "moonshotai/Kimi-K2.6",
+            name: "Kimi K2.6 (Berget / EU)",
+            reasoning: true,             // Kimi supports a thinking phase
+            input: ["text", "image"],
+            contextWindow: 262144,
+            maxTokens: 32768,
+          },
+        ],
+      },
+    },
+  },
+
+  agents: {
+    defaults: {
+      // Pick whichever you want as the default; reference is "<provider>/<model id>".
+      model: { primary: "berget/google/gemma-4-31B-it" },
+
+      // Per-model runtime params. Sampling that isn't a native OpenAI field
+      // (top_k, min_p, ...) goes inside `extra_body` to pass through to Berget's
+      // backend. Values below are each model's recommended profile.
+      models: {
+        "berget/google/gemma-4-31B-it": {
+          alias: "Gemma",
+          // Gemma family recommended sampling (matches generation_config.json):
+          params: { extra_body: { temperature: 1.0, top_p: 0.95, top_k: 64 } },
+        },
+        "berget/moonshotai/Kimi-K2.6": {
+          alias: "Kimi",
+          params: {
+            thinking: { type: "enabled", keep: "recent" },
+            extra_body: { temperature: 1.0, top_p: 0.95, min_p: 0.02 },
+          },
+        },
+      },
+    },
+  },
+}

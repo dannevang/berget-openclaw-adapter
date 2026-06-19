@@ -1,0 +1,31 @@
+# Linux systemd template for berget-adapter.
+#
+# Install (per-user service — recommended):
+#   1. Edit ExecStart's node path and script path below.
+#   2. mkdir -p ~/.config/systemd/user
+#      cp examples/berget-adapter.service ~/.config/systemd/user/berget-adapter.service
+#   3. systemctl --user daemon-reload
+#      systemctl --user enable --now berget-adapter.service
+#   4. (optional, so it runs without an active login session)
+#      loginctl enable-linger "$USER"
+#
+# Logs:   journalctl --user -u berget-adapter -f
+# Find node path with:  which node
+
+[Unit]
+Description=Berget AI schema adapter for OpenClaw (loopback proxy)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Edit these two paths:
+ExecStart=/usr/bin/node /home/USER/path/to/berget-adapter.js
+Restart=always
+RestartSec=10
+# Optional overrides:
+# Environment=BERGET_ADAPTER_PORT=8899
+# Environment=BERGET_UPSTREAM=api.berget.ai
+
+[Install]
+WantedBy=default.target

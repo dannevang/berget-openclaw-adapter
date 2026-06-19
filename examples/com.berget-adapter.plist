@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  macOS launchd template for berget-adapter.
+
+  Install (per-user LaunchAgent):
+    1. Edit the placeholders below: <USER>, the node path, and the script path.
+    2. cp examples/com.berget-adapter.plist ~/Library/LaunchAgents/com.berget-adapter.plist
+    3. launchctl load -w ~/Library/LaunchAgents/com.berget-adapter.plist
+  Reload after edits:
+    launchctl unload ~/Library/LaunchAgents/com.berget-adapter.plist && \
+    launchctl load   ~/Library/LaunchAgents/com.berget-adapter.plist
+
+  Find your node path with:  which node   (Apple Silicon Homebrew = /opt/homebrew/bin/node)
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.berget-adapter</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>ProcessType</key><string>Background</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key><string>/opt/homebrew/bin:/usr/bin:/bin</string>
+    <!-- Optional overrides:
+    <key>BERGET_ADAPTER_PORT</key><string>8899</string>
+    <key>BERGET_ADAPTER_LOG</key><string>/Users/<USER>/Library/Logs/berget-adapter.log</string>
+    -->
+  </dict>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/<USER>/path/to/berget-adapter.js</string>
+  </array>
+  <key>StandardOutPath</key><string>/Users/<USER>/Library/Logs/berget-adapter.daemon.log</string>
+  <key>StandardErrorPath</key><string>/Users/<USER>/Library/Logs/berget-adapter.daemon.log</string>
+</dict>
+</plist>

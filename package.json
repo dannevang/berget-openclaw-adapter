@@ -1,0 +1,31 @@
+{
+  "name": "berget-openclaw-adapter",
+  "version": "1.0.0",
+  "description": "Zero-dependency loopback proxy that fixes nullable JSON-Schema tool types so Berget AI's OpenAI-compatible API works with OpenClaw and other strict OpenAI clients.",
+  "bin": {
+    "berget-adapter": "berget-adapter.js"
+  },
+  "scripts": {
+    "start": "node berget-adapter.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "openclaw",
+    "berget",
+    "openai",
+    "proxy",
+    "tool-calling",
+    "function-calling",
+    "json-schema",
+    "llm",
+    "eu",
+    "gdpr"
+  ],
+  "license": "MIT",
+  "files": [
+    "berget-adapter.js",
+    "examples"
+  ]
+}
