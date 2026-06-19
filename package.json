@@ -24,6 +24,14 @@
     "gdpr"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannevang/berget-openclaw-adapter.git"
+  },
+  "homepage": "https://github.com/dannevang/berget-openclaw-adapter#readme",
+  "bugs": {
+    "url": "https://github.com/dannevang/berget-openclaw-adapter/issues"
+  },
   "files": [
     "berget-adapter.js",
     "examples"
